@@ -1,6 +1,6 @@
-name: 'Your name here'
-description: 'Provide a description here'
-author: 'Your name or organization here'
+name: 'GitHub Action for Mackerel API'
+description: 'Call a Mackerel API endpoint and get the resulting JSON response.'
+author: 'Yutaro Muta'
 inputs:
   myInput:              # change this
     description: 'input description here'
