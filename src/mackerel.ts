@@ -27,8 +27,12 @@ export async function apiClient(apiKey: string): Promise<http.HttpClient> {
   return client
 }
 
-export function apiURL(serverURL: string, path: string, version?: string): URL {
-  const url = new URL(`api/${version ?? 'v0'}/${path}`, serverURL)
+export function requestURL(
+  serverURL: string,
+  version: string,
+  path: string
+): URL {
+  const url = new URL(`api/${version}/${path}`, serverURL)
   return url
 }
 
