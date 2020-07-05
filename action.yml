@@ -2,9 +2,24 @@ name: 'GitHub Action for Mackerel API'
 description: 'Call a Mackerel API endpoint and get the resulting JSON response.'
 author: 'Yutaro Muta'
 inputs:
-  myInput:              # change this
-    description: 'input description here'
-    default: 'default value if applicable'
+  server_url:
+    description: 'The server url. e.g. "https://api.mackerelio.com"'
+    default: 'https://api.mackerelio.com'
+  api_key:
+    description: 'API key for Mackerel - generate one at https://mackerel.io/my?tab=apikeys'
+    required: true
+  http_method:
+    description: 'The HTTP method. e.g. GET / POST'
+    default: 'GET'
+  version:
+    description: 'The API version. e.g "v0"'
+    default: 'v0'
+  path:
+    description: 'The endpoint path. e.g. "hosts/<hostId>/metadata/<namespace>"'
+    required: true
+  body:
+    description: 'The request body string in JSON or hash format'
+    default: ''
 runs:
   using: 'node12'
   main: 'dist/index.js'
