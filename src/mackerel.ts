@@ -39,19 +39,17 @@ export async function request(
   body?: string
 ): Promise<string> {
   let res: http.HttpClientResponse
+  const additionalHeaders: {[key: string]: string} = {}
+  additionalHeaders[http.Headers.ContentType] = http.MediaTypes.ApplicationJson
   switch (method) {
     case 'GET':
       res = await client.get(url.toString())
       break
     case 'POST':
-      res = await client.post(url.toString(), body ?? '', {
-        'Content-Type': http.MediaTypes.ApplicationJson
-      })
+      res = await client.post(url.toString(), body ?? '', additionalHeaders)
       break
     case 'PUT':
-      res = await client.put(url.toString(), body ?? '', {
-        'Content-Type': http.MediaTypes.ApplicationJson
-      })
+      res = await client.put(url.toString(), body ?? '', additionalHeaders)
       break
     case 'DELETE':
       res = await client.del(url.toString())
