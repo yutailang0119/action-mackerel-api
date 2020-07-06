@@ -10,9 +10,7 @@ test('throws 401', async () => {
   const apiKey = ''
   const client = await mackerel.apiClient(apiKey)
 
-  await expect(
-    mackerel.request(client, httpMethod, url)
-  ).rejects.toThrowError(
+  await expect(mackerel.request(client, httpMethod, url)).rejects.toThrowError(
     '401: {"error":"Authentication failed. Please try with valid Api Key."}'
   )
 })
@@ -27,9 +25,7 @@ test('throws 404', async () => {
   const apiKey = ''
   const client = await mackerel.apiClient(apiKey)
 
-  await expect(
-    mackerel.request(client, httpMethod, url)
-  ).rejects.toThrowError(
+  await expect(mackerel.request(client, httpMethod, url)).rejects.toThrowError(
     '404: {"error":"Not found."}'
   )
 })
