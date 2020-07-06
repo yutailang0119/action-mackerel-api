@@ -37,7 +37,7 @@ test('get', async () => {
   const path = 'org'
   const url = mackerel.requestURL(serverURL, version, path)
 
-  const apiKey = process.env.TEST_API_KEY
+  const apiKey = process.env.TEST_API_KEY ?? ''
   const client = await mackerel.apiClient(apiKey)
 
   const response = await mackerel.request(client, httpMethod, url)
@@ -53,7 +53,7 @@ test('post', async () => {
   const path = `services/${serviceName}/tsdb`
   const url = mackerel.requestURL(serverURL, version, path)
 
-  const apiKey = process.env.TEST_API_KEY
+  const apiKey = process.env.TEST_API_KEY ?? ''
   const client = await mackerel.apiClient(apiKey)
 
   const time = Date.now() / 1000
