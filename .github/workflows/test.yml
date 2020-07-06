@@ -1,5 +1,5 @@
 name: "build-test"
-on: # rebuild any PRs and main branch changes
+on:
   pull_request:
   push:
     branches:
@@ -7,17 +7,23 @@ on: # rebuild any PRs and main branch changes
       - 'releases/*'
 
 jobs:
-  build: # make sure build/ci work properly
+  test_ci:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v1
-    - run: |
+    - uses: actions/checkout@v2
+    - name: install
+      run: |
         npm install
-        npm run all
-  test: # make sure the action works on a clean machine without building
-    runs-on: ubuntu-latest
-    steps:
-    - uses: actions/checkout@v1
-    - uses: ./
-      with: 
-        milliseconds: 1000
+    - name: lint
+      run: |
+        npm run lint
+    - name: build
+      run: |
+        npm run build
+    - name: test
+      run: |
+        npm run test
+      env:
+        TEST_API_KEY: ${{ secrets.MACKEREL_API_KEY }}
+        TEST_ORG_NAME: ${{ secrets.MACKEREL_ORG_NAME }}
+        TEST_SERVICE_NAME: ${{ secrets.MACKEREL_SERVICE_NAME }}
