@@ -1,3 +1,4 @@
+import * as process from 'process'
 import * as mackerel from '../src/mackerel'
 
 test('throws 401', async () => {
