@@ -1,16 +1,29 @@
 import * as core from '@actions/core'
-import {wait} from './wait'
+import * as mackerel from './mackerel'
+import {exit} from 'process'
 
 async function run(): Promise<void> {
   try {
-    const ms: string = core.getInput('milliseconds')
-    core.debug(`Waiting ${ms} milliseconds ...`)
+    const httpMethod = mackerel.httpMethod(
+      core.getInput('http_method') ?? 'GET'
+    )
+    if (httpMethod === undefined) {
+      core.setFailed('Unrecognised HTTP method')
+      exit(1)
+    }
+    const serverURL = core.getInput('server_url')
+    const path = core.getInput('path', {required: true})
+    const version = core.getInput('version')
+    const url = mackerel.requestURL(serverURL, version, path)
 
-    core.debug(new Date().toTimeString())
-    await wait(parseInt(ms, 10))
-    core.debug(new Date().toTimeString())
+    const apiKey = core.getInput('api_key', {required: true})
+    const client = await mackerel.apiClient(apiKey)
 
-    core.setOutput('time', new Date().toTimeString())
+    const body = core.getInput('body')
+
+    const response = await mackerel.request(client, httpMethod, url, body)
+
+    core.setOutput('mackerel_api_response', response)
   } catch (error) {
     core.setFailed(error.message)
   }
