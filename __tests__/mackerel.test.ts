@@ -41,23 +41,23 @@ test('get', async () => {
   const path = 'org'
   const url = mackerel.requestURL(serverURL, version, path)
 
-  const apiKey = process.env.apiKey ?? ''
+  const apiKey = process.env.TEST_API_KEY
   const client = await mackerel.apiClient(apiKey)
 
   const response = await mackerel.request(client, httpMethod, url)
-  const org = process.env.org
-  expect(response).toEqual(`{"name":"${org}"}`)
+  const orgName = process.env.TEST_ORG_NAME
+  expect(response).toEqual(`{"name":"${orgName}"}`)
 })
 
 test('post', async () => {
   const httpMethod = 'POST'
   const serverURL = 'https://api.mackerelio.com'
   const version = 'v0'
-  const serviceName = process.env.serviceName
+  const serviceName = process.env.TEST_SERVICE_NAME
   const path = `services/${serviceName}/tsdb`
   const url = mackerel.requestURL(serverURL, version, path)
 
-  const apiKey = process.env.apiKey ?? ''
+  const apiKey = process.env.TEST_API_KEY
   const client = await mackerel.apiClient(apiKey)
 
   const time = Date.now() / 1000
