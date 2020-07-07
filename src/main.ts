@@ -23,7 +23,7 @@ async function run(): Promise<void> {
 
     const response = await mackerel.request(client, httpMethod, url, body)
 
-    core.setOutput('mackerel_api_response', response)
+    core.setOutput('response', response)
   } catch (error) {
     core.setFailed(error.message)
   }
