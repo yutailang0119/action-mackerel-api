@@ -16,6 +16,6 @@ test('test runs', () => {
 
   const orgName = process.env.TEST_ORG_NAME
   expect(cp.execSync(`node ${ip}`, options).toString()).toEqual(
-    `::set-output name=mackerel_api_response,::{"name":"${orgName}"}\n`
+    `::set-output name=response,::{"name":"${orgName}"}\n`
   )
 })
