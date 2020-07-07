@@ -20,6 +20,9 @@ inputs:
   body:
     description: 'The request body string in JSON or hash format'
     default: ''
+outputs:
+  response:
+    description: 'The return value of called API.'
 runs:
   using: 'node12'
   main: 'dist/index.js'
