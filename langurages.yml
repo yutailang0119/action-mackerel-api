@@ -1,0 +1,60 @@
+name: Repositoy Languages
+
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  github-repos-list-languages:
+    runs-on: ubuntu-latest
+    outputs:
+      response: ${{ steps.api.outputs.result }}
+    steps:
+      - uses: actions/github-script@v2
+        id: api
+        with:
+          result-encoding: json
+          script: |
+            const result = await github.repos.listLanguages({
+              owner: context.repo.owner,
+              repo: context.repo.repo
+            })
+            return result['data']
+  language-bytes:
+    needs: github-repos-list-languages
+    runs-on: ubuntu-latest
+    outputs:
+      result: ${{ steps.map-data.outputs.result }}
+    steps:
+      - uses: actions/github-script@v2
+        id: map-data
+        with:
+          result-encoding: string
+          script: |
+            const response = JSON.parse(process.env.API_RESULT)
+            const metricName = process.env.METRIC_NAME
+            const time = Date.now() / 1000
+            const output = []
+            for (const [key, value] of Object.entries(response)) {
+              output.push({
+                name: `${metricName}.${key}`,
+                time: time,
+                value: value
+              })
+            }
+            return JSON.stringify(output)
+        env:
+          API_RESULT: ${{ needs.github-repos-list-languages.outputs.response }}
+          METRIC_NAME: LanguageBytes
+  post-mackerel:
+    needs: language-bytes
+    runs-on: ubuntu-latest
+    steps:
+      - name: Post Mackerel
+        uses: yutailang0119/action-mackerel-api@master
+        with:
+          api_key: ${{ secrets.MACKEREL_API_KEY }}
+          http_method: POST
+          path: services/${{ secrets.MACKEREL_SERVICE_NAME }}/tsdb
+          body: ${{ needs.language-bytes.outputs.result }}
