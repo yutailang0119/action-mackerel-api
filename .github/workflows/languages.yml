@@ -9,7 +9,7 @@ jobs:
   github-repos-list-languages:
     runs-on: ubuntu-latest
     outputs:
-      response: ${{ steps.api.outputs.result }}
+      result: ${{ steps.api.outputs.result }}
     steps:
       - uses: actions/github-script@v2
         id: api
@@ -45,7 +45,7 @@ jobs:
             }
             return JSON.stringify(output)
         env:
-          API_RESULT: ${{ needs.github-repos-list-languages.outputs.response }}
+          API_RESULT: ${{ needs.github-repos-list-languages.outputs.result }}
           METRIC_NAME: LanguageBytes
   post-mackerel:
     needs: language-bytes
