@@ -21,9 +21,9 @@ async function run(): Promise<void> {
 
     const body = core.getInput('body')
 
-    const response = await mackerel.request(client, httpMethod, url, body)
+    const result = await mackerel.request(client, httpMethod, url, body)
 
-    core.setOutput('response', JSON.stringify(response))
+    core.setOutput('result', JSON.stringify(result))
   } catch (error) {
     core.setFailed(error.message)
   }

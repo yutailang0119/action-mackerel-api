@@ -60,11 +60,11 @@ export async function request(
       break
   }
 
-  const responseBody = await res.readBody()
+  const result = await res.readBody()
   const statusCode = res.message.statusCode ?? 400
   if (statusCode < 200 || statusCode > 299) {
-    throw new Error(`${statusCode}: ${responseBody}`)
+    throw new Error(`${statusCode}: ${result}`)
   }
 
-  return responseBody
+  return result
 }

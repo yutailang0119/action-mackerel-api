@@ -41,9 +41,9 @@ test('get', async () => {
   const apiKey = process.env.TEST_API_KEY ?? ''
   const client = await mackerel.apiClient(apiKey)
 
-  const response = await mackerel.request(client, httpMethod, url)
+  const result = await mackerel.request(client, httpMethod, url)
   const orgName = process.env.TEST_ORG_NAME
-  expect(response).toEqual(`{"name":"${orgName}"}`)
+  expect(result).toEqual(`{"name":"${orgName}"}`)
 })
 
 test('post', async () => {
@@ -60,6 +60,6 @@ test('post', async () => {
   const time = Date.now() / 1000
   const body = `[{"name": "test-workflow.post", "time": ${time}, "value": ${time}}]`
 
-  const response = await mackerel.request(client, httpMethod, url, body)
-  expect(response).toEqual('{"success":true}')
+  const result = await mackerel.request(client, httpMethod, url, body)
+  expect(result).toEqual('{"success":true}')
 })
