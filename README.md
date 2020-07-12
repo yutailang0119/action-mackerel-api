@@ -4,6 +4,19 @@
 
 This action provides an interface for calling the [Mackerel API](https://mackerel.io/api-docs/) endpoint and getting the resulting JSON response.
 
+## Features
+
+Supports HTTP methods available in Mackerel API.
+
+- [x] `GET`
+- [ ] `POST`
+    - [x] string format input
+    - [ ] JSON format input
+- [ ] `PUT`
+    - [x] string format input
+    - [ ] JSON format input
+- [x] `DELETE`
+
 ## Exaple
 
 - [.github/workflows/languages.yml](.github/workflows/languages.yml)
