@@ -30,7 +30,7 @@
   },
   "devDependencies": {
     "@types/jest": "^24.9.1",
-    "@types/node": "^12.12.48",
+    "@types/node": "^12.12.50",
     "@typescript-eslint/parser": "^2.34.0",
     "@zeit/ncc": "^0.20.5",
     "eslint": "^5.16.0",
