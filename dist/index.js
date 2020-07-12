@@ -382,8 +382,8 @@ function run() {
             const apiKey = core.getInput('api_key', { required: true });
             const client = yield mackerel.apiClient(apiKey);
             const body = core.getInput('body');
-            const response = yield mackerel.request(client, httpMethod, url, body);
-            core.setOutput('response', JSON.stringify(response));
+            const result = yield mackerel.request(client, httpMethod, url, body);
+            core.setOutput('result', JSON.stringify(result));
         }
         catch (error) {
             core.setFailed(error.message);
@@ -833,12 +833,12 @@ function request(client, method, url, body) {
                 res = yield client.del(url.toString());
                 break;
         }
-        const responseBody = yield res.readBody();
+        const result = yield res.readBody();
         const statusCode = (_a = res.message.statusCode) !== null && _a !== void 0 ? _a : 400;
         if (statusCode < 200 || statusCode > 299) {
-            throw new Error(`${statusCode}: ${responseBody}`);
+            throw new Error(`${statusCode}: ${result}`);
         }
-        return responseBody;
+        return result;
     });
 }
 exports.request = request;
