@@ -26,15 +26,6 @@ var __importStar = (this && this.__importStar) || function (mod) {
     __setModuleDefault(result, mod);
     return result;
 };
-var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
-    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
-    return new (P || (P = Promise))(function (resolve, reject) {
-        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
-        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
-        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
-        step((generator = generator.apply(thisArg, _arguments || [])).next());
-    });
-};
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.request = exports.requestURL = exports.apiClient = exports.httpMethod = void 0;
 const http = __importStar(__nccwpck_require__(925));
@@ -53,16 +44,14 @@ function httpMethod(method) {
     }
 }
 exports.httpMethod = httpMethod;
-function apiClient(apiKey) {
-    return __awaiter(this, void 0, void 0, function* () {
-        const client = new http.HttpClient('action-mackerel-api');
-        client.requestOptions = {
-            headers: {
-                'X-Api-Key': apiKey
-            }
-        };
-        return client;
-    });
+async function apiClient(apiKey) {
+    const client = new http.HttpClient('action-mackerel-api');
+    client.requestOptions = {
+        headers: {
+            'X-Api-Key': apiKey
+        }
+    };
+    return client;
 }
 exports.apiClient = apiClient;
 function requestURL(serverURL, version, path) {
@@ -70,33 +59,30 @@ function requestURL(serverURL, version, path) {
     return url;
 }
 exports.requestURL = requestURL;
-function request(client, method, url, body) {
-    var _a;
-    return __awaiter(this, void 0, void 0, function* () {
-        let res;
-        const additionalHeaders = {};
-        additionalHeaders[http.Headers.ContentType] = http.MediaTypes.ApplicationJson;
-        switch (method) {
-            case 'GET':
-                res = yield client.get(url.toString());
-                break;
-            case 'POST':
-                res = yield client.post(url.toString(), body !== null && body !== void 0 ? body : '', additionalHeaders);
-                break;
-            case 'PUT':
-                res = yield client.put(url.toString(), body !== null && body !== void 0 ? body : '', additionalHeaders);
-                break;
-            case 'DELETE':
-                res = yield client.del(url.toString());
-                break;
-        }
-        const result = yield res.readBody();
-        const statusCode = (_a = res.message.statusCode) !== null && _a !== void 0 ? _a : 400;
-        if (statusCode < 200 || statusCode > 299) {
-            throw new Error(`${statusCode}: ${result}`);
-        }
-        return result;
-    });
+async function request(client, method, url, body) {
+    let res;
+    const additionalHeaders = {};
+    additionalHeaders[http.Headers.ContentType] = http.MediaTypes.ApplicationJson;
+    switch (method) {
+        case 'GET':
+            res = await client.get(url.toString());
+            break;
+        case 'POST':
+            res = await client.post(url.toString(), body ?? '', additionalHeaders);
+            break;
+        case 'PUT':
+            res = await client.put(url.toString(), body ?? '', additionalHeaders);
+            break;
+        case 'DELETE':
+            res = await client.del(url.toString());
+            break;
+    }
+    const result = await res.readBody();
+    const statusCode = res.message.statusCode ?? 400;
+    if (statusCode < 200 || statusCode > 299) {
+        throw new Error(`${statusCode}: ${result}`);
+    }
+    return result;
 }
 exports.request = request;
 
@@ -127,42 +113,30 @@ var __importStar = (this && this.__importStar) || function (mod) {
     __setModuleDefault(result, mod);
     return result;
 };
-var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
-    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
-    return new (P || (P = Promise))(function (resolve, reject) {
-        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
-        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
-        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
-        step((generator = generator.apply(thisArg, _arguments || [])).next());
-    });
-};
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 const core = __importStar(__nccwpck_require__(186));
 const mackerel = __importStar(__nccwpck_require__(134));
 const process_1 = __nccwpck_require__(765);
-function run() {
-    var _a;
-    return __awaiter(this, void 0, void 0, function* () {
-        try {
-            const httpMethod = mackerel.httpMethod((_a = core.getInput('http_method')) !== null && _a !== void 0 ? _a : 'GET');
-            if (httpMethod === undefined) {
-                core.setFailed('Unrecognised HTTP method');
-                process_1.exit(1);
-            }
-            const serverURL = core.getInput('server_url');
-            const path = core.getInput('path', { required: true });
-            const version = core.getInput('version');
-            const url = mackerel.requestURL(serverURL, version, path);
-            const apiKey = core.getInput('api_key', { required: true });
-            const client = yield mackerel.apiClient(apiKey);
-            const body = core.getInput('body');
-            const result = yield mackerel.request(client, httpMethod, url, body);
-            core.setOutput('result', JSON.stringify(result));
+async function run() {
+    try {
+        const httpMethod = mackerel.httpMethod(core.getInput('http_method') ?? 'GET');
+        if (httpMethod === undefined) {
+            core.setFailed('Unrecognised HTTP method');
+            process_1.exit(1);
         }
-        catch (error) {
-            core.setFailed(error.message);
-        }
-    });
+        const serverURL = core.getInput('server_url');
+        const path = core.getInput('path', { required: true });
+        const version = core.getInput('version');
+        const url = mackerel.requestURL(serverURL, version, path);
+        const apiKey = core.getInput('api_key', { required: true });
+        const client = await mackerel.apiClient(apiKey);
+        const body = core.getInput('body');
+        const result = await mackerel.request(client, httpMethod, url, body);
+        core.setOutput('result', JSON.stringify(result));
+    }
+    catch (error) {
+        core.setFailed(error.message);
+    }
 }
 run();
 
