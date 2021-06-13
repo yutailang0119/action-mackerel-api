@@ -3,7 +3,7 @@ name: Repositoy Languages
 on:
   push:
     branches:
-      - master
+      - main
 
 jobs:
   github-repos-list-languages:
@@ -52,7 +52,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Post Mackerel
-        uses: yutailang0119/action-mackerel-api@master
+        uses: yutailang0119/action-mackerel-api@main
         with:
           api_key: ${{ secrets.MACKEREL_API_KEY }}
           http_method: POST
