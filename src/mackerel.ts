@@ -2,7 +2,7 @@ import * as http from '@actions/http-client'
 
 type HttpMethod = 'GET' | 'POST' | 'PUT' | 'DELETE'
 
-export function httpMethod(method: string): HttpMethod | undefined {
+export const httpMethod = (method: string): HttpMethod | undefined => {
   switch (method.toUpperCase()) {
     case 'GET':
       return 'GET'
@@ -17,7 +17,7 @@ export function httpMethod(method: string): HttpMethod | undefined {
   }
 }
 
-export async function apiClient(apiKey: string): Promise<http.HttpClient> {
+export const apiClient = (apiKey: string): http.HttpClient => {
   const client = new http.HttpClient('action-mackerel-api')
   client.requestOptions = {
     headers: {
@@ -27,21 +27,21 @@ export async function apiClient(apiKey: string): Promise<http.HttpClient> {
   return client
 }
 
-export function requestURL(
+export const requestURL = (
   serverURL: string,
   version: string,
   path: string
-): URL {
+): URL => {
   const url = new URL(`api/${version}/${path}`, serverURL)
   return url
 }
 
-export async function request(
+export const request = async (
   client: http.HttpClient,
   method: HttpMethod,
   url: URL,
   body?: string
-): Promise<string> {
+): Promise<string> => {
   let res: http.HttpClientResponse
   const additionalHeaders: {[key: string]: string} = {}
   additionalHeaders[http.Headers.ContentType] = http.MediaTypes.ApplicationJson

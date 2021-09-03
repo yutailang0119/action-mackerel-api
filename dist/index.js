@@ -28,7 +28,7 @@ var __importStar = (this && this.__importStar) || function (mod) {
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.request = exports.requestURL = exports.apiClient = exports.httpMethod = void 0;
 const http = __importStar(__nccwpck_require__(925));
-function httpMethod(method) {
+const httpMethod = (method) => {
     switch (method.toUpperCase()) {
         case 'GET':
             return 'GET';
@@ -41,9 +41,9 @@ function httpMethod(method) {
         default:
             return undefined;
     }
-}
+};
 exports.httpMethod = httpMethod;
-async function apiClient(apiKey) {
+const apiClient = (apiKey) => {
     const client = new http.HttpClient('action-mackerel-api');
     client.requestOptions = {
         headers: {
@@ -51,14 +51,14 @@ async function apiClient(apiKey) {
         }
     };
     return client;
-}
+};
 exports.apiClient = apiClient;
-function requestURL(serverURL, version, path) {
+const requestURL = (serverURL, version, path) => {
     const url = new URL(`api/${version}/${path}`, serverURL);
     return url;
-}
+};
 exports.requestURL = requestURL;
-async function request(client, method, url, body) {
+const request = async (client, method, url, body) => {
     let res;
     const additionalHeaders = {};
     additionalHeaders[http.Headers.ContentType] = http.MediaTypes.ApplicationJson;
@@ -82,7 +82,7 @@ async function request(client, method, url, body) {
         throw new Error(`${statusCode}: ${result}`);
     }
     return result;
-}
+};
 exports.request = request;
 
 
@@ -128,7 +128,7 @@ async function run() {
         const version = core.getInput('version');
         const url = mackerel.requestURL(serverURL, version, path);
         const apiKey = core.getInput('api_key', { required: true });
-        const client = await mackerel.apiClient(apiKey);
+        const client = mackerel.apiClient(apiKey);
         const body = core.getInput('body');
         const result = await mackerel.request(client, httpMethod, url, body);
         core.setOutput('result', JSON.stringify(result));
