@@ -9,7 +9,7 @@ test('throws 401', async () => {
   const url = mackerel.requestURL(serverURL, version, path)
 
   const apiKey = ''
-  const client = await mackerel.apiClient(apiKey)
+  const client = mackerel.apiClient(apiKey)
 
   await expect(mackerel.request(client, httpMethod, url)).rejects.toThrowError(
     '401: {"error":"Authentication failed. Please try with valid Api Key."}'
@@ -24,7 +24,7 @@ test('throws 404', async () => {
   const url = mackerel.requestURL(serverURL, version, path)
 
   const apiKey = ''
-  const client = await mackerel.apiClient(apiKey)
+  const client = mackerel.apiClient(apiKey)
 
   await expect(mackerel.request(client, httpMethod, url)).rejects.toThrowError(
     '404: {"error":"Not found."}'
@@ -39,7 +39,7 @@ test('get', async () => {
   const url = mackerel.requestURL(serverURL, version, path)
 
   const apiKey = process.env.TEST_API_KEY ?? ''
-  const client = await mackerel.apiClient(apiKey)
+  const client = mackerel.apiClient(apiKey)
 
   const result = await mackerel.request(client, httpMethod, url)
   const orgName = process.env.TEST_ORG_NAME
@@ -55,7 +55,7 @@ test('post', async () => {
   const url = mackerel.requestURL(serverURL, version, path)
 
   const apiKey = process.env.TEST_API_KEY ?? ''
-  const client = await mackerel.apiClient(apiKey)
+  const client = mackerel.apiClient(apiKey)
 
   const time = Date.now() / 1000
   const body = `[{"name": "test-workflow.post", "time": ${time}, "value": ${time}}]`

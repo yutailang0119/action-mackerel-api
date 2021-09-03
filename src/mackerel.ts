@@ -17,7 +17,7 @@ export function httpMethod(method: string): HttpMethod | undefined {
   }
 }
 
-export async function apiClient(apiKey: string): Promise<http.HttpClient> {
+export function apiClient(apiKey: string): http.HttpClient {
   const client = new http.HttpClient('action-mackerel-api')
   client.requestOptions = {
     headers: {

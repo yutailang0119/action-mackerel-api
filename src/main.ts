@@ -17,7 +17,7 @@ async function run(): Promise<void> {
     const url = mackerel.requestURL(serverURL, version, path)
 
     const apiKey = core.getInput('api_key', {required: true})
-    const client = await mackerel.apiClient(apiKey)
+    const client = mackerel.apiClient(apiKey)
 
     const body = core.getInput('body')
 
