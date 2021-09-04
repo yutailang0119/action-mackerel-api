@@ -17,7 +17,7 @@ Supports HTTP methods available in Mackerel API.
     - [ ] JSON format input
 - [x] `DELETE`
 
-## Exaple
+## Example
 
 - [.github/workflows/languages.yml](.github/workflows/languages.yml)
     - Post the lists languages for the repository ​​to Mackerel by using the [GitHub API](https://developer.github.com/v3/repos/#list-repository-languages).  
