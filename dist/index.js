@@ -59,6 +59,7 @@ const requestURL = (serverURL, version, path) => {
 };
 exports.requestURL = requestURL;
 const request = async (client, method, url, body) => {
+    var _a;
     let res;
     const additionalHeaders = {};
     additionalHeaders[http.Headers.ContentType] = http.MediaTypes.ApplicationJson;
@@ -67,17 +68,17 @@ const request = async (client, method, url, body) => {
             res = await client.get(url.toString());
             break;
         case 'POST':
-            res = await client.post(url.toString(), body ?? '', additionalHeaders);
+            res = await client.post(url.toString(), body !== null && body !== void 0 ? body : '', additionalHeaders);
             break;
         case 'PUT':
-            res = await client.put(url.toString(), body ?? '', additionalHeaders);
+            res = await client.put(url.toString(), body !== null && body !== void 0 ? body : '', additionalHeaders);
             break;
         case 'DELETE':
             res = await client.del(url.toString());
             break;
     }
     const result = await res.readBody();
-    const statusCode = res.message.statusCode ?? 400;
+    const statusCode = (_a = res.message.statusCode) !== null && _a !== void 0 ? _a : 400;
     if (statusCode < 200 || statusCode > 299) {
         throw new Error(`${statusCode}: ${result}`);
     }
@@ -117,8 +118,9 @@ const core = __importStar(__nccwpck_require__(186));
 const mackerel = __importStar(__nccwpck_require__(134));
 const process_1 = __nccwpck_require__(765);
 async function run() {
+    var _a;
     try {
-        const httpMethod = mackerel.httpMethod(core.getInput('http_method') ?? 'GET');
+        const httpMethod = mackerel.httpMethod((_a = core.getInput('http_method')) !== null && _a !== void 0 ? _a : 'GET');
         if (httpMethod === undefined) {
             core.setFailed('Unrecognised HTTP method');
             process_1.exit(1);
