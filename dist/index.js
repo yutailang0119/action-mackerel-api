@@ -114,9 +114,9 @@ var __importStar = (this && this.__importStar) || function (mod) {
     return result;
 };
 Object.defineProperty(exports, "__esModule", ({ value: true }));
+const process_1 = __nccwpck_require__(765);
 const core = __importStar(__nccwpck_require__(186));
 const mackerel = __importStar(__nccwpck_require__(134));
-const process_1 = __nccwpck_require__(765);
 async function run() {
     var _a;
     try {

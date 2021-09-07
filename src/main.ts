@@ -1,6 +1,6 @@
+import {exit} from 'process'
 import * as core from '@actions/core'
 import * as mackerel from './mackerel'
-import {exit} from 'process'
 
 async function run(): Promise<void> {
   try {
