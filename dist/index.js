@@ -132,8 +132,16 @@ async function run() {
         const apiKey = core.getInput('api_key', { required: true });
         const client = mackerel.apiClient(apiKey);
         const body = core.getInput('body');
-        const result = await mackerel.request(client, httpMethod, url, body);
-        core.setOutput('result', JSON.stringify(result));
+        const isDryRun = core.getBooleanInput('dry_run');
+        if (isDryRun) {
+            core.info('Dry-run. Not call Mackerel API.');
+            core.info(`url: ${url}`);
+            core.info(`body: ${body}`);
+        }
+        else {
+            const result = await mackerel.request(client, httpMethod, url, body);
+            core.setOutput('result', JSON.stringify(result));
+        }
     }
     catch (error) {
         core.setFailed(error.message);
