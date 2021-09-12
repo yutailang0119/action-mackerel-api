@@ -21,9 +21,16 @@ async function run(): Promise<void> {
 
     const body = core.getInput('body')
 
-    const result = await mackerel.request(client, httpMethod, url, body)
+    const isDryRun = core.getBooleanInput('dry_run')
 
-    core.setOutput('result', JSON.stringify(result))
+    if (isDryRun) {
+      core.info('Dry-run. Not call Mackerel API.')
+      core.info(`url: ${url}`)
+      core.info(`body: ${body}`)
+    } else {
+      const result = await mackerel.request(client, httpMethod, url, body)
+      core.setOutput('result', JSON.stringify(result))
+    }
   } catch (error) {
     core.setFailed(error.message)
   }
