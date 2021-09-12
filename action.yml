@@ -20,6 +20,9 @@ inputs:
   body:
     description: 'The request body string in JSON or hash format'
     default: ''
+  dry_run:
+    description: 'Do not call Mackerel API. Just prints out.'
+    default: false
 outputs:
   result:
     description: 'The return value of called API, stringified with `JSON.stringify`'
