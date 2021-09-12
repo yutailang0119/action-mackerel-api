@@ -1,4 +1,4 @@
-name: "build-test"
+name: 'build-test'
 on:
   pull_request:
   push:
@@ -6,23 +6,24 @@ on:
       - main
 
 jobs:
-  test_ci:
+  build:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v2
-    - name: install
-      run: |
-        npm install
-    - name: lint
-      run: |
-        npm run lint
-    - name: build
-      run: |
-        npm run build
-    - name: test
-      run: |
-        npm run test
-      env:
-        TEST_API_KEY: ${{ secrets.MACKEREL_API_KEY }}
-        TEST_ORG_NAME: ${{ secrets.MACKEREL_ORG_NAME }}
-        TEST_SERVICE_NAME: ${{ secrets.MACKEREL_SERVICE_NAME }}
+      - uses: actions/checkout@v2
+      - run: |
+          npm install
+      - run: |
+          npm run all
+        env:
+          TEST_API_KEY: ${{ secrets.MACKEREL_API_KEY }}
+          TEST_ORG_NAME: ${{ secrets.MACKEREL_ORG_NAME }}
+          TEST_SERVICE_NAME: ${{ secrets.MACKEREL_SERVICE_NAME }}
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: ./
+        with:
+          api_key: ${{ secrets.MACKEREL_API_KEY }}
+          path: org
+          dry_run: true
