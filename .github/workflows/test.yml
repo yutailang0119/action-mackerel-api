@@ -18,3 +18,12 @@ jobs:
           TEST_API_KEY: ${{ secrets.MACKEREL_API_KEY }}
           TEST_ORG_NAME: ${{ secrets.MACKEREL_ORG_NAME }}
           TEST_SERVICE_NAME: ${{ secrets.MACKEREL_SERVICE_NAME }}
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: ./
+        with:
+          api_key: ${{ secrets.MACKEREL_API_KEY }}
+          path: org
+          dry_run: true
