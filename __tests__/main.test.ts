@@ -9,6 +9,7 @@ test('test runs', () => {
   process.env['INPUT_PATH'] = 'org'
   process.env['INPUT_HTTP_METHOD'] = 'GET'
   process.env['INPUT_API_KEY'] = process.env.TEST_API_KEY
+  process.env['INPUT_DRY_RUN'] = 'false'
   const ip = path.join(__dirname, '..', 'lib', 'main.js')
   const options: cp.ExecSyncOptions = {
     env: process.env
