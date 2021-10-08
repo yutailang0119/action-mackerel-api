@@ -11,12 +11,12 @@ jobs:
     outputs:
       result: ${{ steps.api.outputs.result }}
     steps:
-      - uses: actions/github-script@v2
+      - uses: actions/github-script@v5
         id: api
         with:
           result-encoding: json
           script: |
-            const result = await github.repos.listLanguages({
+            const result = await github.rest.repos.listLanguages({
               owner: context.repo.owner,
               repo: context.repo.repo
             })
@@ -27,7 +27,7 @@ jobs:
     outputs:
       result: ${{ steps.map-data.outputs.result }}
     steps:
-      - uses: actions/github-script@v2
+      - uses: actions/github-script@v5
         id: map-data
         with:
           result-encoding: string
