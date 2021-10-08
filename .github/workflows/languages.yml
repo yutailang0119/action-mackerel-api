@@ -16,7 +16,7 @@ jobs:
         with:
           result-encoding: json
           script: |
-            const result = await github.repos.listLanguages({
+            const result = await github.rest.repos.listLanguages({
               owner: context.repo.owner,
               repo: context.repo.repo
             })
