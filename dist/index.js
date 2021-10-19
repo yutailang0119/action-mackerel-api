@@ -123,7 +123,7 @@ async function run() {
         const httpMethod = mackerel.httpMethod((_a = core.getInput('http_method')) !== null && _a !== void 0 ? _a : 'GET');
         if (httpMethod === undefined) {
             core.setFailed('Unrecognised HTTP method');
-            process_1.exit(1);
+            (0, process_1.exit)(1);
         }
         const serverURL = core.getInput('server_url');
         const path = core.getInput('path', { required: true });
@@ -144,7 +144,8 @@ async function run() {
         }
     }
     catch (error) {
-        core.setFailed(error.message);
+        if (error instanceof Error)
+            core.setFailed(error.message);
     }
 }
 run();
