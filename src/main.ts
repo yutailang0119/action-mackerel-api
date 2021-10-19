@@ -32,7 +32,7 @@ async function run(): Promise<void> {
       core.setOutput('result', JSON.stringify(result))
     }
   } catch (error) {
-    core.setFailed(error.message)
+    if (error instanceof Error) core.setFailed(error.message)
   }
 }
 
