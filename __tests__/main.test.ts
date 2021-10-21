@@ -11,13 +11,14 @@ test('test runs', () => {
   process.env['INPUT_VERSION'] = 'v0'
   process.env['INPUT_PATH'] = 'org'
   process.env['INPUT_DRY_RUN'] = 'false'
+  const np = process.execPath
   const ip = path.join(__dirname, '..', 'lib', 'main.js')
-  const options: cp.ExecSyncOptions = {
+  const options: cp.ExecFileSyncOptions = {
     env: process.env
   }
 
   const orgName = process.env.TEST_ORG_NAME
-  expect(cp.execSync(`node ${ip}`, options).toString()).toEqual(
+  expect(cp.execFileSync(np, [ip], options).toString()).toEqual(
     `\n::set-output name=result::"{\\"name\\":\\"${orgName}\\"}"\n`
   )
 })
