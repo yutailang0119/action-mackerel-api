@@ -5,23 +5,23 @@ import * as mackerel from './mackerel'
 async function run(): Promise<void> {
   try {
     const httpMethod = mackerel.httpMethod(
-      core.getInput('http_method') ?? 'GET'
+      core.getInput('http-method') ?? 'GET'
     )
     if (httpMethod === undefined) {
       core.setFailed('Unrecognised HTTP method')
       exit(1)
     }
-    const serverURL = core.getInput('server_url')
+    const serverURL = core.getInput('server-url')
     const path = core.getInput('path', {required: true})
     const version = core.getInput('version')
     const url = mackerel.requestURL(serverURL, version, path)
 
-    const apiKey = core.getInput('api_key', {required: true})
+    const apiKey = core.getInput('api-key', {required: true})
     const client = mackerel.apiClient(apiKey)
 
     const body = core.getInput('body')
 
-    const isDryRun = core.getBooleanInput('dry_run')
+    const isDryRun = core.getBooleanInput('dry-run')
 
     if (isDryRun) {
       core.info('Dry-run. Not call Mackerel API.')

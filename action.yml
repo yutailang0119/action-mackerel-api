@@ -2,13 +2,13 @@ name: 'GitHub Action for Mackerel API'
 description: 'Call a Mackerel API endpoint and get the resulting JSON response.'
 author: 'Yutaro Muta'
 inputs:
-  server_url:
+  server-url:
     description: 'The server url. e.g. "https://api.mackerelio.com"'
     default: 'https://api.mackerelio.com'
-  api_key:
+  api-key:
     description: 'API key for Mackerel - generate one at https://mackerel.io/my?tab=apikeys'
     required: true
-  http_method:
+  http-method:
     description: 'The HTTP method. e.g. GET / POST'
     default: 'GET'
   version:
@@ -20,7 +20,7 @@ inputs:
   body:
     description: 'The request body string in JSON or hash format'
     default: ''
-  dry_run:
+  dry-run:
     description: 'Do not call Mackerel API. Just prints out.'
     default: false
 outputs:
