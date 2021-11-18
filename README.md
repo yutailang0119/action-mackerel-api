@@ -58,8 +58,8 @@ jobs:
       - name: Post Mackerel
         uses: yutailang0119/action-mackerel-api@v1
         with:
-          api_key: ${{ secrets.MACKEREL_API_KEY }}
-          http_method: POST
+          api-key: ${{ secrets.MACKEREL_API_KEY }}
+          http-method: POST
           path: services/${{ secrets.MACKEREL_SERVICE_NAME }}/tsdb
           body: ${{ steps.create-body.outputs.result }}
 ```

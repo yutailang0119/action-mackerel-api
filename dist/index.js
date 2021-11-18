@@ -120,19 +120,19 @@ const mackerel = __importStar(__nccwpck_require__(134));
 async function run() {
     var _a;
     try {
-        const httpMethod = mackerel.httpMethod((_a = core.getInput('http_method')) !== null && _a !== void 0 ? _a : 'GET');
+        const httpMethod = mackerel.httpMethod((_a = core.getInput('http-method')) !== null && _a !== void 0 ? _a : 'GET');
         if (httpMethod === undefined) {
             core.setFailed('Unrecognised HTTP method');
             (0, process_1.exit)(1);
         }
-        const serverURL = core.getInput('server_url');
+        const serverURL = core.getInput('server-url');
         const path = core.getInput('path', { required: true });
         const version = core.getInput('version');
         const url = mackerel.requestURL(serverURL, version, path);
-        const apiKey = core.getInput('api_key', { required: true });
+        const apiKey = core.getInput('api-key', { required: true });
         const client = mackerel.apiClient(apiKey);
         const body = core.getInput('body');
-        const isDryRun = core.getBooleanInput('dry_run');
+        const isDryRun = core.getBooleanInput('dry-run');
         if (isDryRun) {
             core.info('Dry-run. Not call Mackerel API.');
             core.info(`url: ${url}`);
