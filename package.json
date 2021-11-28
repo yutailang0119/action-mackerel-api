@@ -1,8 +1,8 @@
 {
   "name": "action-mackerel-api",
   "version": "2.0.0",
-  "private": true,
-  "description": "GitHub Action for Mackerel API",
+  "private": false,
+  "description": "GitHub Actions for Mackerel API",
   "main": "lib/main.js",
   "scripts": {
     "build": "tsc",
@@ -19,8 +19,8 @@
   },
   "keywords": [
     "actions",
-    "node",
-    "setup"
+    "mackerel",
+    "activity"
   ],
   "author": "yutailang0119",
   "license": "MIT",
