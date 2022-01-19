@@ -56,7 +56,7 @@ jobs:
             ]
             return JSON.stringify(body)
       - name: Post Mackerel
-        uses: yutailang0119/action-mackerel-api@v1
+        uses: yutailang0119/action-mackerel-api@v2
         with:
           api-key: ${{ secrets.MACKEREL_API_KEY }}
           http-method: POST
