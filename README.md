@@ -36,7 +36,7 @@ jobs:
   post-mackerel:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/github-script@v2
+      - uses: actions/github-script@v6.0.0
         id: create-body
         with:
           result-encoding: string
