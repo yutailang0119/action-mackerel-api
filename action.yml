@@ -1,6 +1,6 @@
 name: 'GitHub Action for Mackerel API'
 description: 'Call a Mackerel API endpoint and get the resulting JSON response.'
-author: 'Yutaro Muta'
+author: 'yutailang0119'
 inputs:
   server-url:
     description: 'The server url. e.g. "https://api.mackerelio.com"'
