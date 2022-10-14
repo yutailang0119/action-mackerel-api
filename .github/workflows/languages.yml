@@ -12,7 +12,7 @@ jobs:
     outputs:
       result: ${{ steps.api.outputs.result }}
     steps:
-      - uses: actions/github-script@v6.3.2
+      - uses: actions/github-script@v6.3.3
         id: api
         with:
           result-encoding: json
@@ -28,7 +28,7 @@ jobs:
     outputs:
       result: ${{ steps.map-data.outputs.result }}
     steps:
-      - uses: actions/github-script@v6.3.2
+      - uses: actions/github-script@v6.3.3
         id: map-data
         with:
           result-encoding: string
