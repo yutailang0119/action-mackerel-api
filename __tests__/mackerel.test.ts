@@ -13,7 +13,7 @@ test('throws 401', async () => {
   const client = mackerel.apiClient(apiKey)
 
   expect(mackerel.request(client, httpMethod, url)).rejects.toThrowError(
-    '401: {"error":"Authentication failed. Please try with valid Api Key."}'
+    '401: {"error":{"message":"Authentication failed. Please try with valid Api Key."}}'
   )
 })
 
