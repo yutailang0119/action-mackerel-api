@@ -6,8 +6,6 @@ import {expect, test} from '@jest/globals'
 
 // shows how the runner will run a javascript action with env / stdout protocol
 test('test runs', () => {
-  console.log(`process.env.GITHUB_OUTPUT: ${process.env.GITHUB_OUTPUT}`)
-  console.log(`process.env['GITHUB_OUTPUT']: ${process.env['GITHUB_OUTPUT']}`)
   process.env['INPUT_SERVER-URL'] = 'https://api.mackerelio.com'
   process.env['INPUT_API-KEY'] = process.env.TEST_API_KEY
   process.env['INPUT_HTTP-METHOD'] = 'GET'
