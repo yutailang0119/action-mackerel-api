@@ -424,6 +424,8 @@ exports.getBooleanInput = getBooleanInput;
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 function setOutput(name, value) {
     const filePath = process.env['GITHUB_OUTPUT'] || '';
+    // console.log("aaaa");
+    // console.log(filePath);
     if (filePath) {
         return file_command_1.issueFileCommand('OUTPUT', file_command_1.prepareKeyValueMessage(name, value));
     }
