@@ -22,7 +22,7 @@ test('test runs', () => {
   }
 
   const orgName = process.env.TEST_ORG_NAME
-  fs.writeFileSync(outputFile, '')
+  fs.writeFileSync(outputFile, '', {flag: 'wx'})
 
   cp.execFileSync(np, [ip], options)
   const output = fs.readFileSync(outputFile, 'utf-8')
