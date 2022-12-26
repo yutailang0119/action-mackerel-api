@@ -28,7 +28,7 @@ test('throws 404', async () => {
   const client = mackerel.apiClient(apiKey)
 
   expect(mackerel.request(client, httpMethod, url)).rejects.toThrowError(
-    '404: {"error":"Not found."}'
+    '404: {"error":{"message":"Not found."}}'
   )
 })
 
