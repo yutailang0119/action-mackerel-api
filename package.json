@@ -1,6 +1,6 @@
 {
   "name": "action-mackerel-api",
-  "version": "3.1.0",
+  "version": "3.2.0",
   "private": false,
   "description": "GitHub Actions for Mackerel API",
   "main": "lib/main.js",
