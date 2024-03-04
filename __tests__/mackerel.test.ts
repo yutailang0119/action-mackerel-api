@@ -44,7 +44,7 @@ test('get', async () => {
 
   const result = await mackerel.request(client, httpMethod, url)
   const orgName = process.env.TEST_ORG_NAME
-  expect(result).toEqual(`{"name":"${orgName}"}`)
+  expect(result).toEqual(`{"name":"${orgName}","displayName":null}`)
 })
 
 test('post', async () => {
