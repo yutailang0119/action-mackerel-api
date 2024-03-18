@@ -36,7 +36,7 @@ jobs:
   post-mackerel:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/github-script@v6
+      - uses: actions/github-script@v7
         id: create-body
         with:
           result-encoding: string
@@ -56,7 +56,7 @@ jobs:
             ]
             return JSON.stringify(body)
       - name: Post Mackerel
-        uses: yutailang0119/action-mackerel-api@v3
+        uses: yutailang0119/action-mackerel-api@v4
         with:
           api-key: ${{ secrets.MACKEREL_API_KEY }}
           http-method: POST
