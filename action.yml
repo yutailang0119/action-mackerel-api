@@ -22,7 +22,7 @@ inputs:
     default: ''
   dry-run:
     description: 'Do not call Mackerel API. Just prints out.'
-    default: false
+    default: 'false'
 outputs:
   result:
     description: 'The return value of called API, stringified with `JSON.stringify`'
