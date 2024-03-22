@@ -26,7 +26,9 @@ test('test runs', () => {
 
   cp.execFileSync(np, [ip], options)
   const output = fs.readFileSync(outputFile, 'utf-8')
-  expect(output).toContain(`\"{\\\"name\\\":\\\"${orgName}\\\",\\\"displayName\\\":null}\"`)
+  expect(output).toContain(
+    `\"{\\\"name\\\":\\\"${orgName}\\\",\\\"displayName\\\":null}\"`
+  )
 
   fs.unlinkSync(outputFile)
 })
