@@ -10,6 +10,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4.2.2
+        with:
+          fetch-depth: 1
       - run: |
           npm install
       - run: |
@@ -22,6 +24,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4.2.2
+        with:
+          fetch-depth: 1
       - uses: ./
         with:
           api-key: ${{ secrets.MACKEREL_API_KEY }}
