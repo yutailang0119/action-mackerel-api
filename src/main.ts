@@ -1,4 +1,4 @@
-import {exit} from 'process'
+import { exit } from 'process'
 import * as core from '@actions/core'
 import * as mackerel from './mackerel.js'
 
@@ -12,11 +12,11 @@ export async function run(): Promise<void> {
       exit(1)
     }
     const serverURL = core.getInput('server-url')
-    const path = core.getInput('path', {required: true})
+    const path = core.getInput('path', { required: true })
     const version = core.getInput('version')
     const url = mackerel.requestURL(serverURL, version, path)
 
-    const apiKey = core.getInput('api-key', {required: true})
+    const apiKey = core.getInput('api-key', { required: true })
     const client = mackerel.apiClient(apiKey)
 
     const body = core.getInput('body')

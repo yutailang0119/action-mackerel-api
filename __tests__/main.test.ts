@@ -1,6 +1,6 @@
 import { jest } from '@jest/globals'
 import * as process from 'process'
-import {expect} from '@jest/globals'
+import { expect } from '@jest/globals'
 import * as core from '../__fixtures__/core.js'
 
 jest.unstable_mockModule('@actions/core', () => core)

@@ -43,7 +43,7 @@ export const request = async (
   body?: string
 ): Promise<string> => {
   let res: http.HttpClientResponse
-  const additionalHeaders: {[key: string]: string} = {}
+  const additionalHeaders: { [key: string]: string } = {}
   additionalHeaders[http.Headers.ContentType] = http.MediaTypes.ApplicationJson
   switch (method) {
     case 'GET':

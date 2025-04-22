@@ -1,5 +1,5 @@
 import * as process from 'process'
-import {expect} from '@jest/globals'
+import { expect } from '@jest/globals'
 import * as mackerel from '../src/mackerel.js'
 
 describe('mackerel.ts', () => {
