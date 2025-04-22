@@ -1,3 +1,4 @@
+import { exit } from 'process';
 import require$$0 from 'os';
 import require$$0$1 from 'crypto';
 import require$$1 from 'fs';
@@ -7257,11 +7258,11 @@ function requireBody () {
 	return body;
 }
 
-var request$1;
+var request$2;
 var hasRequiredRequest$1;
 
 function requireRequest$1 () {
-	if (hasRequiredRequest$1) return request$1;
+	if (hasRequiredRequest$1) return request$2;
 	hasRequiredRequest$1 = 1;
 
 	const {
@@ -7760,8 +7761,8 @@ function requireRequest$1 () {
 	  }
 	}
 
-	request$1 = Request;
-	return request$1;
+	request$2 = Request;
+	return request$2;
 }
 
 var dispatcher;
@@ -16107,11 +16108,11 @@ function requireResponse () {
 
 /* globals AbortController */
 
-var request;
+var request$1;
 var hasRequiredRequest;
 
 function requireRequest () {
-	if (hasRequiredRequest) return request;
+	if (hasRequiredRequest) return request$1;
 	hasRequiredRequest = 1;
 
 	const { extractBody, mixinBody, cloneBody } = requireBody();
@@ -17055,8 +17056,8 @@ function requireRequest () {
 	  }
 	]);
 
-	request = { Request, makeRequest };
-	return request;
+	request$1 = { Request, makeRequest };
+	return request$1;
 }
 
 var fetch_1;
@@ -27246,39 +27247,87 @@ function requireCore () {
 
 var coreExports = requireCore();
 
-/**
- * Waits for a number of milliseconds.
- *
- * @param milliseconds The number of milliseconds to wait.
- * @returns Resolves with 'done!' after the wait is over.
- */
-async function wait(milliseconds) {
-    return new Promise((resolve) => {
-        if (isNaN(milliseconds))
-            throw new Error('milliseconds is not a number');
-        setTimeout(() => resolve('done!'), milliseconds);
-    });
-}
+var libExports = requireLib();
 
-/**
- * The main function for the action.
- *
- * @returns Resolves when the action is complete.
- */
+const httpMethod = (method) => {
+    switch (method.toUpperCase()) {
+        case 'GET':
+            return 'GET';
+        case 'POST':
+            return 'POST';
+        case 'PUT':
+            return 'PUT';
+        case 'DELETE':
+            return 'DELETE';
+        default:
+            return undefined;
+    }
+};
+const apiClient = (apiKey) => {
+    const client = new libExports.HttpClient('action-mackerel-api');
+    client.requestOptions = {
+        headers: {
+            'X-Api-Key': apiKey
+        }
+    };
+    return client;
+};
+const requestURL = (serverURL, version, path) => {
+    const url = new URL(`api/${version}/${path}`, serverURL);
+    return url;
+};
+const request = async (client, method, url, body) => {
+    let res;
+    const additionalHeaders = {};
+    additionalHeaders[libExports.Headers.ContentType] = libExports.MediaTypes.ApplicationJson;
+    switch (method) {
+        case 'GET':
+            res = await client.get(url.toString());
+            break;
+        case 'POST':
+            res = await client.post(url.toString(), body ?? '', additionalHeaders);
+            break;
+        case 'PUT':
+            res = await client.put(url.toString(), body ?? '', additionalHeaders);
+            break;
+        case 'DELETE':
+            res = await client.del(url.toString());
+            break;
+    }
+    const result = await res.readBody();
+    const statusCode = res.message.statusCode ?? 400;
+    if (statusCode < 200 || statusCode > 299) {
+        throw new Error(`${statusCode}: ${result}`);
+    }
+    return result;
+};
+
 async function run() {
     try {
-        const ms = coreExports.getInput('milliseconds');
-        // Debug logs are only output if the `ACTIONS_STEP_DEBUG` secret is true
-        coreExports.debug(`Waiting ${ms} milliseconds ...`);
-        // Log the current timestamp, wait, then log the new timestamp
-        coreExports.debug(new Date().toTimeString());
-        await wait(parseInt(ms, 10));
-        coreExports.debug(new Date().toTimeString());
-        // Set outputs for other workflow steps to use
-        coreExports.setOutput('time', new Date().toTimeString());
+        const httpMethod$1 = httpMethod(coreExports.getInput('http-method') ?? 'GET');
+        if (httpMethod$1 === undefined) {
+            coreExports.setFailed('Unrecognised HTTP method');
+            exit(1);
+        }
+        const serverURL = coreExports.getInput('server-url');
+        const path = coreExports.getInput('path', { required: true });
+        const version = coreExports.getInput('version');
+        const url = requestURL(serverURL, version, path);
+        const apiKey = coreExports.getInput('api-key', { required: true });
+        const client = apiClient(apiKey);
+        const body = coreExports.getInput('body');
+        const isDryRun = coreExports.getBooleanInput('dry-run');
+        if (isDryRun) {
+            coreExports.info('Dry-run. Not call Mackerel API.');
+            coreExports.info(`url: ${url}`);
+            coreExports.info(`body: ${body}`);
+        }
+        else {
+            const result = await request(client, httpMethod$1, url, body);
+            coreExports.setOutput('result', JSON.stringify(result));
+        }
     }
     catch (error) {
-        // Fail the workflow run if an error occurs
         if (error instanceof Error)
             coreExports.setFailed(error.message);
     }
