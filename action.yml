@@ -1,23 +1,39 @@
-name: The name of your action here
-description: Provide a description here
-author: Your name or organization here
+name: GitHub Action for Mackerel API
+description: Call a Mackerel API endpoint and get the resulting JSON response.
+author: yutailang0119
 
-# Add your action's branding here. This will appear on the GitHub Marketplace.
 branding:
-  icon: heart
-  color: red
+  icon: activity
+  color: blue
 
-# Define your inputs here.
 inputs:
-  milliseconds:
-    description: Your input description here
+  server-url:
+    description: The server url. e.g. "https://api.mackerelio.com"
+    default: 'https://api.mackerelio.com'
+  api-key:
+    description:
+      API key for Mackerel - generate one at https://mackerel.io/my?tab=apikeys
     required: true
-    default: '1000'
+  http-method:
+    description: The HTTP method. e.g. GET / POST
+    default: 'GET'
+  version:
+    description: The API version. e.g "v0"
+    default: 'v0'
+  path:
+    description: The endpoint path. e.g. "hosts/<hostId>/metadata/<namespace>"
+    required: true
+  body:
+    description: The request body string in JSON or hash format
+    default: ''
+  dry-run:
+    description: Do not call Mackerel API. Just prints out.
+    default: 'false'
 
-# Define your outputs here.
 outputs:
-  time:
-    description: Your output description here
+  result:
+    description:
+      The return value of called API, stringified with `JSON.stringify`
 
 runs:
   using: node20
