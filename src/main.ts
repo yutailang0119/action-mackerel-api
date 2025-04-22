@@ -1,27 +1,39 @@
+import {exit} from 'process'
 import * as core from '@actions/core'
-import { wait } from './wait.js'
+import * as mackerel from './mackerel'
 
-/**
- * The main function for the action.
- *
- * @returns Resolves when the action is complete.
- */
-export async function run(): Promise<void> {
+async function run(): Promise<void> {
   try {
-    const ms: string = core.getInput('milliseconds')
+    const httpMethod = mackerel.httpMethod(
+      core.getInput('http-method') ?? 'GET'
+    )
+    if (httpMethod === undefined) {
+      core.setFailed('Unrecognised HTTP method')
+      exit(1)
+    }
+    const serverURL = core.getInput('server-url')
+    const path = core.getInput('path', {required: true})
+    const version = core.getInput('version')
+    const url = mackerel.requestURL(serverURL, version, path)
 
-    // Debug logs are only output if the `ACTIONS_STEP_DEBUG` secret is true
-    core.debug(`Waiting ${ms} milliseconds ...`)
+    const apiKey = core.getInput('api-key', {required: true})
+    const client = mackerel.apiClient(apiKey)
 
-    // Log the current timestamp, wait, then log the new timestamp
-    core.debug(new Date().toTimeString())
-    await wait(parseInt(ms, 10))
-    core.debug(new Date().toTimeString())
+    const body = core.getInput('body')
 
-    // Set outputs for other workflow steps to use
-    core.setOutput('time', new Date().toTimeString())
+    const isDryRun = core.getBooleanInput('dry-run')
+
+    if (isDryRun) {
+      core.info('Dry-run. Not call Mackerel API.')
+      core.info(`url: ${url}`)
+      core.info(`body: ${body}`)
+    } else {
+      const result = await mackerel.request(client, httpMethod, url, body)
+      core.setOutput('result', JSON.stringify(result))
+    }
   } catch (error) {
-    // Fail the workflow run if an error occurs
     if (error instanceof Error) core.setFailed(error.message)
   }
 }
+
+run()
