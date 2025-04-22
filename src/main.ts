@@ -2,7 +2,7 @@ import {exit} from 'process'
 import * as core from '@actions/core'
 import * as mackerel from './mackerel.js'
 
-async function run(): Promise<void> {
+export async function run(): Promise<void> {
   try {
     const httpMethod = mackerel.httpMethod(
       core.getInput('http-method') ?? 'GET'
@@ -35,5 +35,3 @@ async function run(): Promise<void> {
     if (error instanceof Error) core.setFailed(error.message)
   }
 }
-
-run()
