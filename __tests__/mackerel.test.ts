@@ -1,6 +1,6 @@
 import * as process from 'process'
 import {expect, test} from '@jest/globals'
-import * as mackerel from '../src/mackerel'
+import * as mackerel from '../src/mackerel.js'
 
 test('throws 401', async () => {
   const httpMethod = 'GET'
