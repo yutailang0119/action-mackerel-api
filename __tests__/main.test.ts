@@ -1,62 +1,34 @@
-/**
- * Unit tests for the action's main functionality, src/main.ts
- *
- * To mock dependencies in ESM, you can create fixtures that export mock
- * functions and objects. For example, the core module is mocked in this test,
- * so that the actual '@actions/core' module is not imported.
- */
-import { jest } from '@jest/globals'
-import * as core from '../__fixtures__/core.js'
-import { wait } from '../__fixtures__/wait.js'
+import fs from 'fs'
+import * as process from 'process'
+import * as cp from 'child_process'
+import * as path from 'path'
+import {expect, test} from '@jest/globals'
 
-// Mocks should be declared before the module being tested is imported.
-jest.unstable_mockModule('@actions/core', () => core)
-jest.unstable_mockModule('../src/wait.js', () => ({ wait }))
+// shows how the runner will run a javascript action with env / stdout protocol
+test('test runs', () => {
+  const outputFile = path.join(__dirname, 'github_output')
 
-// The module being tested should be imported dynamically. This ensures that the
-// mocks are used in place of any actual dependencies.
-const { run } = await import('../src/main.js')
+  process.env['INPUT_SERVER-URL'] = 'https://api.mackerelio.com'
+  process.env['INPUT_API-KEY'] = process.env.TEST_API_KEY
+  process.env['INPUT_HTTP-METHOD'] = 'GET'
+  process.env['INPUT_VERSION'] = 'v0'
+  process.env['INPUT_PATH'] = 'org'
+  process.env['INPUT_DRY-RUN'] = 'false'
+  process.env['GITHUB_OUTPUT'] = outputFile
+  const np = process.execPath
+  const ip = path.join(__dirname, '..', 'lib', 'main.js')
+  const options: cp.ExecFileSyncOptions = {
+    env: process.env
+  }
 
-describe('main.ts', () => {
-  beforeEach(() => {
-    // Set the action's inputs as return values from core.getInput().
-    core.getInput.mockImplementation(() => '500')
+  const orgName = process.env.TEST_ORG_NAME
+  fs.writeFileSync(outputFile, '', {flag: 'wx'})
 
-    // Mock the wait function so that it does not actually wait.
-    wait.mockImplementation(() => Promise.resolve('done!'))
-  })
+  cp.execFileSync(np, [ip], options)
+  const output = fs.readFileSync(outputFile, 'utf-8')
+  expect(output).toContain(
+    `\"{\\\"name\\\":\\\"${orgName}\\\",\\\"displayName\\\":null}\"`
+  )
 
-  afterEach(() => {
-    jest.resetAllMocks()
-  })
-
-  it('Sets the time output', async () => {
-    await run()
-
-    // Verify the time output was set.
-    expect(core.setOutput).toHaveBeenNthCalledWith(
-      1,
-      'time',
-      // Simple regex to match a time string in the format HH:MM:SS.
-      expect.stringMatching(/^\d{2}:\d{2}:\d{2}/)
-    )
-  })
-
-  it('Sets a failed status', async () => {
-    // Clear the getInput mock and return an invalid value.
-    core.getInput.mockClear().mockReturnValueOnce('this is not a number')
-
-    // Clear the wait mock and return a rejected promise.
-    wait
-      .mockClear()
-      .mockRejectedValueOnce(new Error('milliseconds is not a number'))
-
-    await run()
-
-    // Verify that the action was marked as failed.
-    expect(core.setFailed).toHaveBeenNthCalledWith(
-      1,
-      'milliseconds is not a number'
-    )
-  })
+  fs.unlinkSync(outputFile)
 })
