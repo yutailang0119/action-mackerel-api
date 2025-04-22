@@ -1,6 +1,6 @@
-<a href="https://github.com/yutailang0119/action-mackerel-api/actions"><img alt="action-mackerel-api status" src="https://github.com/yutailang0119/action-mackerel-api/workflows/build-test/badge.svg"></a>
-
 # GitHub Action for Mackerel API
+
+<a href="https://github.com/yutailang0119/action-mackerel-api/actions"><img alt="action-mackerel-api status" src="https://github.com/yutailang0119/action-mackerel-api/workflows/build-test/badge.svg"></a>
 
 This action provides an interface for calling the
 [Mackerel API](https://mackerel.io/api-docs/) endpoint and getting the resulting
