@@ -46,7 +46,7 @@ describe('main.ts', () => {
     expect(core.setOutput).toHaveBeenNthCalledWith(
       1,
       'result',
-      `\"{\\\"name\\\":\\\"${orgName}\\\",\\\"displayName\\\":null}\"`
+      `"{\\"name\\":\\"${orgName}\\",\\"displayName\\":null}"`
     )
   })
 })
