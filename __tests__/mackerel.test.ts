@@ -13,7 +13,7 @@ describe('mackerel.ts', () => {
     const apiKey = ''
     const client = mackerel.apiClient(apiKey)
 
-    expect(mackerel.request(client, httpMethod, url)).rejects.toThrowError(
+    expect(mackerel.request(client, httpMethod, url)).rejects.toThrow(
       '401: {"error":{"message":"Authentication failed. Please try with valid Api Key."}}'
     )
   })
@@ -28,7 +28,7 @@ describe('mackerel.ts', () => {
     const apiKey = ''
     const client = mackerel.apiClient(apiKey)
 
-    expect(mackerel.request(client, httpMethod, url)).rejects.toThrowError(
+    expect(mackerel.request(client, httpMethod, url)).rejects.toThrow(
       '404: {"error":{"message":"Not found."}}'
     )
   })
