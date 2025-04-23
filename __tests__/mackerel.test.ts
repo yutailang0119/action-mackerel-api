@@ -3,7 +3,7 @@ import { expect } from '@jest/globals'
 import * as mackerel from '../src/mackerel.js'
 
 describe('mackerel.ts', () => {
-  it('throws 401', () => {
+  it('throws 401', async () => {
     const httpMethod = 'GET'
     const serverURL = 'https://api.mackerelio.com'
     const version = 'v0'
@@ -13,12 +13,12 @@ describe('mackerel.ts', () => {
     const apiKey = ''
     const client = mackerel.apiClient(apiKey)
 
-    expect(mackerel.request(client, httpMethod, url)).rejects.toThrow(
+    await expect(mackerel.request(client, httpMethod, url)).rejects.toThrow(
       '401: {"error":{"message":"Authentication failed. Please try with valid Api Key."}}'
     )
   })
 
-  it('throws 404', () => {
+  it('throws 404', async () => {
     const httpMethod = 'GET'
     const serverURL = 'https://api.mackerelio.com'
     const version = 'v0'
@@ -28,7 +28,7 @@ describe('mackerel.ts', () => {
     const apiKey = ''
     const client = mackerel.apiClient(apiKey)
 
-    expect(mackerel.request(client, httpMethod, url)).rejects.toThrow(
+    await expect(mackerel.request(client, httpMethod, url)).rejects.toThrow(
       '404: {"error":{"message":"Not found."}}'
     )
   })
