@@ -43,10 +43,6 @@ jobs:
       - name: Test
         id: npm-ci-test
         run: npm run ci-test
-        env:
-          TEST_API_KEY: ${{ secrets.MACKEREL_API_KEY }}
-          TEST_ORG_NAME: ${{ secrets.MACKEREL_ORG_NAME }}
-          TEST_SERVICE_NAME: ${{ secrets.MACKEREL_SERVICE_NAME }}
 
   test-action:
     name: GitHub Actions Test
