@@ -1,8 +1,12 @@
+import { jest } from '@jest/globals'
 import * as process from 'process'
-import { expect } from '@jest/globals'
 import * as mackerel from '../src/mackerel.js'
 
 describe('mackerel.ts', () => {
+  afterEach(() => {
+    jest.resetAllMocks()
+  })
+
   it('throws 401', async () => {
     const httpMethod = 'GET'
     const serverURL = 'https://api.mackerelio.com'
