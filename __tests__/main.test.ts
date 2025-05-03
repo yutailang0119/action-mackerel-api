@@ -12,7 +12,7 @@ describe('main.ts', () => {
     jest.resetAllMocks()
   })
 
-  it('test runs', async () => {
+  it('runs', async () => {
     core.getInput.mockImplementation((name) => {
       switch (name) {
         case 'server-url':
