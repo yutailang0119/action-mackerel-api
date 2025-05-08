@@ -1,34 +1,51 @@
-import fs from 'fs'
+import { jest } from '@jest/globals'
 import * as process from 'process'
-import * as cp from 'child_process'
-import * as path from 'path'
-import {expect, test} from '@jest/globals'
+import * as core from '../__fixtures__/core.js'
+
+jest.unstable_mockModule('@actions/core', () => core)
+
+const { run } = await import('../src/main.js')
 
 // shows how the runner will run a javascript action with env / stdout protocol
-test('test runs', () => {
-  const outputFile = path.join(__dirname, 'github_output')
+describe('main.ts', () => {
+  afterEach(() => {
+    jest.resetAllMocks()
+  })
 
-  process.env['INPUT_SERVER-URL'] = 'https://api.mackerelio.com'
-  process.env['INPUT_API-KEY'] = process.env.TEST_API_KEY
-  process.env['INPUT_HTTP-METHOD'] = 'GET'
-  process.env['INPUT_VERSION'] = 'v0'
-  process.env['INPUT_PATH'] = 'org'
-  process.env['INPUT_DRY-RUN'] = 'false'
-  process.env['GITHUB_OUTPUT'] = outputFile
-  const np = process.execPath
-  const ip = path.join(__dirname, '..', 'lib', 'main.js')
-  const options: cp.ExecFileSyncOptions = {
-    env: process.env
-  }
+  it('runs', async () => {
+    core.getInput.mockImplementation((name) => {
+      switch (name) {
+        case 'server-url':
+          return 'https://api.mackerelio.com'
+        case 'api-key':
+          return process.env.TEST_API_KEY ?? ''
+        case 'http-method':
+          return 'GET'
+        case 'version':
+          return 'v0'
+        case 'path':
+          return 'org'
+        default:
+          return ''
+      }
+    })
+    core.getBooleanInput.mockImplementation((name) => {
+      switch (name) {
+        case 'dry-run':
+          return false
+        default:
+          return false
+      }
+    })
 
-  const orgName = process.env.TEST_ORG_NAME
-  fs.writeFileSync(outputFile, '', {flag: 'wx'})
+    const orgName = process.env.TEST_ORG_NAME
 
-  cp.execFileSync(np, [ip], options)
-  const output = fs.readFileSync(outputFile, 'utf-8')
-  expect(output).toContain(
-    `\"{\\\"name\\\":\\\"${orgName}\\\",\\\"displayName\\\":null}\"`
-  )
+    await run()
 
-  fs.unlinkSync(outputFile)
+    expect(core.setOutput).toHaveBeenNthCalledWith(
+      1,
+      'result',
+      `"{\\"name\\":\\"${orgName}\\",\\"displayName\\":null}"`
+    )
+  })
 })

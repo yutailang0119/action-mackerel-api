@@ -1,8 +1,8 @@
-import {exit} from 'process'
+import { exit } from 'process'
 import * as core from '@actions/core'
-import * as mackerel from './mackerel'
+import * as mackerel from './mackerel.js'
 
-async function run(): Promise<void> {
+export async function run(): Promise<void> {
   try {
     const httpMethod = mackerel.httpMethod(
       core.getInput('http-method') ?? 'GET'
@@ -12,11 +12,11 @@ async function run(): Promise<void> {
       exit(1)
     }
     const serverURL = core.getInput('server-url')
-    const path = core.getInput('path', {required: true})
+    const path = core.getInput('path', { required: true })
     const version = core.getInput('version')
     const url = mackerel.requestURL(serverURL, version, path)
 
-    const apiKey = core.getInput('api-key', {required: true})
+    const apiKey = core.getInput('api-key', { required: true })
     const client = mackerel.apiClient(apiKey)
 
     const body = core.getInput('body')
@@ -35,5 +35,3 @@ async function run(): Promise<void> {
     if (error instanceof Error) core.setFailed(error.message)
   }
 }
-
-run()
