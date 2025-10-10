@@ -36,5 +36,5 @@ outputs:
       The return value of called API, stringified with `JSON.stringify`
 
 runs:
-  using: node20
+  using: node24
   main: dist/index.js
