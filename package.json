@@ -40,11 +40,11 @@
   "license": "MIT",
   "dependencies": {
     "@actions/core": "^2.0.2",
-    "@actions/http-client": "^2.2.3"
+    "@actions/http-client": "^3.0.2"
   },
   "devDependencies": {
     "@eslint/compat": "^1.2.8",
-    "@github/local-action": "^3.1.4",
+    "@github/local-action": "^7.0.0",
     "@jest/globals": "^29.7.0",
     "@rollup/plugin-commonjs": "^28.0.1",
     "@rollup/plugin-node-resolve": "^16.0.1",
